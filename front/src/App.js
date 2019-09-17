@@ -1,13 +1,6 @@
 import React from "react";
+import Navio from "./Naviocomp.js";
 import navio from "navio";
-
-function Navio(props){
-  return(
-    <div>
-      {props.datos}
-    </div>
-  )
-}
 
 class App extends React.Component{
   constructor(props){
@@ -34,22 +27,27 @@ class App extends React.Component{
     }
   }
 
-  onChange(){
+  renderDatos(){
+    return this.state.datos.map(d  => <Navio data={d}></Navio>)
+  }
+
+  onChange(event){
+    console.log(event.target.inValue)
     this.setState({
-      inValue: this.myIn.value
+      inValue: event.target.inValue
     })
   }
 
   render(){
     return(
         <div className="container">
+          <h1>Binevenido a Looking Datos.gov.co</h1>
           <input
             type="text"
-            ref={myIn => this.myIn.myIn}
             value={this.state.inValue}
             onChange={this.onChange.bind(this)}
           />
-          <navio data={this.state.datos}></navio>
+          {this.renderDatos()}
         </div>
     );
   }
