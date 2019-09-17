@@ -44,6 +44,7 @@ class App extends React.Component{
           <h1>Binevenido a Looking Datos.gov.co</h1>
           <input
             type="text"
+            ref={myIn => this.myIn.myIn = myIn}
             value={this.state.inValue}
             onChange={this.onChange.bind(this)}
           />
