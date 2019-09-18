@@ -3,52 +3,48 @@ import Navio from "./Naviocomp.js";
 
 class App extends React.Component{
   constructor(props){
-    super(props)
+    super(props);
 
     this.state = {
       url: "https://www.datos.gov.co/resource/54ah-2npf.json",
+    //  socrata: "$limit=100&$offset=0",
       datos: [],
-      keys:[]
+      displayNavio: false
     }
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this)
   }
 
    componentDidMount(){
-    console.log("Did mount App")
     fetch(this.state.url)
     .then(res => res.json())
     .then((data) => {this.setState({
       datos: data
-    })});
-  }
-
-/*   componentDidUpdate(prevProps){
-    console.log("Did mount App 2")
-
-    console.log(this.state.url !== prevProps.url)
-    if (this.state.datos !== prevProps.datos) {
-     // this.handleClick()
-    }
-
-    console.log("New props", this.state.url)
-  } */
+    })
+    console.log(this.state.datos.length)
+    })  
+   }
 
   onChange(event){
     this.setState({
       url: event.target.value
     })
   }
-/* 
-  handleClick(prevProps){
-    if (this.state.url !== prevProps.url) {
-      fetch(this.state.url)
-      .then(res => res.json())
-      .then((data) => {this.setState({
-        datos: data
-      })});
-     }
-  } */
+
+  handleClick(){
+    this.setState({
+      displayNavio: true
+    })
+    fetch(this.state.url)
+    .then(res => res.json())
+    .then((data) => {this.setState({
+      datos: data
+    })
+    this.setState({
+      displayNavio: false
+    })
+  })  
+  }
 
   render(){
     return(
@@ -61,21 +57,21 @@ class App extends React.Component{
                 <input
                 id="myIn"
                 type="text"
-                placeholder={this.state.url}
+                placeholder={"This is the url that is showing now " + this.state.url}
                 onChange={this.onChange.bind(this)}
                 className="form-control ml-2 "
                 />
             </div>
-            <div>
+          </form>
+          <div>
               <button className="btn btn-success mt-1" onClick={this.handleClick}>Lets visualize</button>  
             </div>
-          </form>
           <div className="mt-5">
           {
-            this.state.datos === 0 ? 
-            <h2>Loading data</h2>
-            :
+            !this.state.displayNavio ? 
             <Navio data={this.state.datos}></Navio>
+            :
+            <h2>Loading data</h2>
           }
           </div>
         </div>

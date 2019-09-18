@@ -3,23 +3,19 @@ import navio from "navio";
 import "./NavioComp.css"
 
 class Navio extends React.Component{
+    
+    getData(){
+        setTimeout(() => {
+            if (this.props.data.length > 0) {
+                this.navio.data(this.props.data);
+                this.navio.addAllAttribs();
+            }
+        }, 500)
+    }
+
     componentDidMount(){
-        console.log("Navio did mount")
         this.navio = navio(this.myDiv,620);
-    }
-
-    componentDidUpdate(prevProps){
-        if (this.props.data) {
-            this.navio.data(this.props.data);
-            this.navio.addAllAttribs();
-        }
-        else if (prevProps.data.length !== this.props.data.length){
-            this.navio.data(prevProps.data);
-            this.navio.addAllAttribs();
-        }
-    }
-
-    addingData(){
+        this.getData();
     }
     
     render(){
