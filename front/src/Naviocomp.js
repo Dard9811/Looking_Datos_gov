@@ -10,7 +10,7 @@ class Navio extends React.Component{
                 this.navio.data(this.props.data);
                 this.navio.addAllAttribs();
             }
-        }, 500)
+        }, 1000)
     }
 
     componentDidMount(){

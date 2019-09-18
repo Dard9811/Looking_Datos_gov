@@ -1,13 +1,17 @@
 import React from "react";
 import Navio from "./Naviocomp.js";
 
+//https://www.datos.gov.co/resource/54ah-2npf.json
+//https://www.datos.gov.co/resource/94x9-w4r3.json
+
 class App extends React.Component{
   constructor(props){
     super(props);
 
     this.state = {
-      url: "https://www.datos.gov.co/resource/54ah-2npf.json",
-    //  socrata: "$limit=100&$offset=0",
+      url: "https://www.datos.gov.co/resource/94x9-w4r3.json",
+      limit: "?$limit=100",
+      offset: "&$offset=",
       datos: [],
       displayNavio: false
     }
@@ -15,14 +19,32 @@ class App extends React.Component{
     this.handleClick = this.handleClick.bind(this)
   }
 
+  addData(){
+    let datosPar = [];
+    let datosFull = [];
+    for (let i = 0; i < 10000; i = i + 100) {
+        fetch(this.state.url.concat(this.state.limit).concat(this.state.offset).concat(i.toString()))
+        .then(res => res.json())
+        .then((data) => {
+          if (data.length === 0) {
+            i = 1000000;
+            
+            for (let j = 0; j < datosPar.length; j++) {
+              datosFull = datosFull.concat(datosPar[j]);
+            }
+            this.setState({
+              datos: datosFull
+            })
+          }
+          else{
+            datosPar.push(data);
+          }
+      })
+    }
+  }
+
    componentDidMount(){
-    fetch(this.state.url)
-    .then(res => res.json())
-    .then((data) => {this.setState({
-      datos: data
-    })
-    console.log(this.state.datos.length)
-    })  
+     this.addData()
    }
 
   onChange(event){
@@ -57,7 +79,7 @@ class App extends React.Component{
                 <input
                 id="myIn"
                 type="text"
-                placeholder={"This is the url that is showing now " + this.state.url}
+                placeholder={"Put here your url " + this.state.url}
                 onChange={this.onChange.bind(this)}
                 className="form-control ml-2 "
                 />
