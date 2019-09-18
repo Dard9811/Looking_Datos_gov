@@ -10,6 +10,8 @@ class App extends React.Component{
       datos: [],
       keys:[]
     }
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
    componentDidMount(){
@@ -21,15 +23,32 @@ class App extends React.Component{
     })});
   }
 
+/*   componentDidUpdate(prevProps){
+    console.log("Did mount App 2")
+
+    console.log(this.state.url !== prevProps.url)
+    if (this.state.datos !== prevProps.datos) {
+     // this.handleClick()
+    }
+
+    console.log("New props", this.state.url)
+  } */
+
   onChange(event){
     this.setState({
       url: event.target.value
     })
   }
-
-  handleClick(){
-
-  }
+/* 
+  handleClick(prevProps){
+    if (this.state.url !== prevProps.url) {
+      fetch(this.state.url)
+      .then(res => res.json())
+      .then((data) => {this.setState({
+        datos: data
+      })});
+     }
+  } */
 
   render(){
     return(
@@ -37,7 +56,8 @@ class App extends React.Component{
           <h1>Welcom to looking datos.gov.co</h1>
           <form>
             <div className="form-group">
-              <label htmlFor="myIn"> Insert your link to the json from <a href="https://www.datos.gov.co/browse?sortBy=newest" target="_blank">datos.gov.co</a></label>
+              <p>This is our first visualice of the </p>
+              <label htmlFor="myIn"> Insert your link of the json from <a href="https://www.datos.gov.co/browse?sortBy=newest" target="_blank">datos.gov.co</a></label>
                 <input
                 id="myIn"
                 type="text"
@@ -47,7 +67,7 @@ class App extends React.Component{
                 />
             </div>
             <div>
-              <button className="btn btn-success mt-1">Lets visualize</button>  
+              <button className="btn btn-success mt-1" onClick={this.handleClick}>Lets visualize</button>  
             </div>
           </form>
           <div className="mt-5">
