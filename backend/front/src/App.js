@@ -1,8 +1,11 @@
 import React from "react";
 import Navio from "./Naviocomp.js";
+import Historico from "./Historico.js";
 
 //https://www.datos.gov.co/resource/94x9-w4r3.json
 //https://www.datos.gov.co/resource/2kuk-p27q.json
+
+let his = [];
 
 class App extends React.Component{
   constructor(props){
@@ -10,13 +13,28 @@ class App extends React.Component{
 
     this.state = {
       url: "https://www.datos.gov.co/resource/gg99-dx5z.json",
-      limit: "?$limit=100&$offset=",
       datos: [],
       displayNavio: false,
-      tamanio: 2470
+      tamanio: 2470,
+      historico: []
     }
 
     this.handleClick = this.handleClick.bind(this)
+    this.handleClickData = this.handleClickData.bind(this);
+  }
+
+  componentDidMount(){
+    this.addData();
+    fetch("/getData")
+    .then(res => res.json())
+    .then(datos => {
+      this.setState({
+        historico: datos
+      })
+      for (let i = 0; i < datos.length; i++) { 
+       his.push(datos[i].url)
+      }
+   });
   }
 
   addData(){
@@ -25,7 +43,7 @@ class App extends React.Component{
     let cont = Math.ceil(this.state.tamanio/100);
 
     for (let i = 0; i < this.state.tamanio + 100; i = i + 100) {
-      fetch(this.state.url.concat(this.state.limit).concat(i.toString()))
+      fetch(this.state.url.concat("?$limit=100&$offset=").concat(i.toString()))
       .then(res => res.json())
       .then((data) => {
         if (data.length === 0) {
@@ -37,22 +55,34 @@ class App extends React.Component{
             for (let j = 0; j < datosPar.length; j++) {
               datosFull = datosFull.concat(datosPar[j]);
             }
-            console.log(datosFull)
             this.setState({
               datos: datosFull
             })
             i = this.state.tamanio;
-/*             console.log(this.state.datos) */
           }
         }
-    })
+    })}
   }
 
+  uploadData(){
+    let data = {url: this.state.url, tamanio: parseInt(this.state.tamanio)};
+    fetch("addData", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers:{
+        "Content-Type": "application/json"
+      }
+    }).then(res => res.json())
+    .catch(error => console.error("Error:", error))
+    .then(response => console.log("Success:", response));
   }
 
-   componentDidMount(){
-     this.addData()
-   }
+
+  renderData(){
+    return this.state.historico.map(h => 
+      <Historico datos={h} onClick={this.handleClickData}></Historico>
+    );
+  }
 
   onChange(event){
     this.setState({
@@ -69,13 +99,36 @@ class App extends React.Component{
   handleClick(){
     this.setState({
       displayNavio: true
-    })
-    this.addData()
+    });
+    this.addData();
     setTimeout(() => {
       this.setState({
         displayNavio: false
       })
-    }, 50)
+    }, 2000);
+    this.uploadData();
+    this.renderData();
+  }
+
+  
+  handleClickData(){
+    let req = {};
+    req.url = this.state.url;
+    fetch("getUrl", {
+      method: "POST",
+      body: JSON.stringify(req),
+      headers:{
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      this.setState({
+        url: data[0].url,
+        tamanio: data[0].tamanio 
+      })
+    })
   }
 
   render(){
@@ -113,6 +166,10 @@ class App extends React.Component{
             :
             <h2>Loading data</h2>
           }
+          </div>
+          <div className="historico">
+            <h3>Historial de consultas</h3>
+            {this.renderData()}
           </div>
         </div>
     );
