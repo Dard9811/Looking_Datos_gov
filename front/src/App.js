@@ -1,19 +1,19 @@
 import React from "react";
 import Navio from "./Naviocomp.js";
 
-//https://www.datos.gov.co/resource/54ah-2npf.json
 //https://www.datos.gov.co/resource/94x9-w4r3.json
+//https://www.datos.gov.co/resource/2kuk-p27q.json
 
 class App extends React.Component{
   constructor(props){
     super(props);
 
     this.state = {
-      url: "https://www.datos.gov.co/resource/94x9-w4r3.json",
-      limit: "?$limit=100",
-      offset: "&$offset=",
+      url: "https://www.datos.gov.co/resource/gg99-dx5z.json",
+      limit: "?$limit=100&$offset=",
       datos: [],
-      displayNavio: false
+      displayNavio: false,
+      tamanio: 2470
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -22,29 +22,40 @@ class App extends React.Component{
   addData(){
     let datosPar = [];
     let datosFull = [];
-    for (let i = 0; i < 10000; i = i + 100) {
-        fetch(this.state.url.concat(this.state.limit).concat(this.state.offset).concat(i.toString()))
-        .then(res => res.json())
-        .then((data) => {
-          if (data.length === 0) {
-            i = 1000000;
-            
+    let cont = Math.ceil(this.state.tamanio/100);
+
+    for (let i = 0; i < this.state.tamanio + 100; i = i + 100) {
+      fetch(this.state.url.concat(this.state.limit).concat(i.toString()))
+      .then(res => res.json())
+      .then((data) => {
+        if (data.length === 0) {
+
+        }
+        else{
+          datosPar.push(data);
+          if (cont === datosPar.length) {
             for (let j = 0; j < datosPar.length; j++) {
               datosFull = datosFull.concat(datosPar[j]);
             }
+            console.log(datosFull)
             this.setState({
-              datos: datosFull
+              datos: datosFull,
+              displayNavio: true
             })
+            i = this.state.tamanio;
+/*             console.log(this.state.datos) */
           }
-          else{
-            datosPar.push(data);
-          }
-      })
-    }
+        }
+    })
+  }
+
   }
 
    componentDidMount(){
      this.addData()
+     this.setState({
+       displayNavio: false
+     })
    }
 
   onChange(event){
@@ -53,19 +64,26 @@ class App extends React.Component{
     })
   }
 
+  onChangeTamanio(event){
+    this.setState({
+      tamanio: event.target.value
+    })
+  }
+
   handleClick(){
     this.setState({
       displayNavio: true
     })
-    fetch(this.state.url)
+/*     fetch(this.state.url)
     .then(res => res.json())
     .then((data) => {this.setState({
       datos: data
-    })
-    this.setState({
+    }) */
+
+/*     this.setState({
       displayNavio: false
     })
-  })  
+  }) */
   }
 
   render(){
@@ -76,21 +94,29 @@ class App extends React.Component{
             <div className="form-group">
               <p>This is our first visualice of the </p>
               <label htmlFor="myIn"> Insert your link of the json from <a href="https://www.datos.gov.co/browse?sortBy=newest" target="_blank">datos.gov.co</a></label>
-                <input
-                id="myIn"
-                type="text"
-                placeholder={"Put here your url " + this.state.url}
-                onChange={this.onChange.bind(this)}
-                className="form-control ml-2 "
-                />
+              <input
+              id="myIn"
+              type="text"
+              placeholder={"Put here your url " + this.state.url}
+              onChange={this.onChange.bind(this)}
+              className="form-control ml-2 "
+              />
+              <label htmlFor="myInTwo"> Insert the size of the json</label>
+              <input
+              id="myInTwo"
+              type="text"
+              placeholder={"Insert size (e.g) " + this.state.tamanio}
+              onChange={this.onChangeTamanio.bind(this)}
+              className="form-control ml-2 "
+              />
             </div>
           </form>
           <div>
-              <button className="btn btn-success mt-1" onClick={this.handleClick}>Lets visualize</button>  
+              <button className="btn btn-success mt-1" onClick={this.handleClick}>Lets visualize</button>
             </div>
           <div className="mt-5">
           {
-            !this.state.displayNavio ? 
+            !this.state.displayNavio ?
             <Navio data={this.state.datos}></Navio>
             :
             <h2>Loading data</h2>
