@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "front-end-install":"npm install --prefix front",
+    "front-install":"npm install --prefix front",
     "start": "node ./bin/www",
     "server": "node ./bin/www",
-    "front-end": "npm start --prefix front-end",
+    "front": "npm start --prefix front",
     "dev": "concurrently \"npm run server\" \"npm run front\"",
     "heroku-postbuild": "npm install --prefix front && npm run build --prefix front"
   },
