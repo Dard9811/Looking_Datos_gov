@@ -31,5 +31,6 @@
   },
   "devDependencies": {
     "@babel/parser": "^7.6.0"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
