@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "front-end-install":"npm install --prefix front-end",
+    "front-end-install":"npm install --prefix front",
     "start": "node ./bin/www",
     "server": "node ./bin/www",
     "front-end": "npm start --prefix front-end",
-    "dev": "concurrently \"npm run server\" \"npm run front-end\"",
-    "heroku-postbuild": "npm install --prefix front-end && npm run build --prefix front-end"
+    "dev": "concurrently \"npm run server\" \"npm run front\"",
+    "heroku-postbuild": "npm install --prefix front && npm run build --prefix front"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
