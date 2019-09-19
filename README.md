@@ -45,7 +45,7 @@ Then the default data will load.
 
 # Author 
 
-* Daniel Augusto Ramirez Dueñas {https://github.com/Dard9811}
+* Daniel Augusto Ramirez Dueñas - https://github.com/Dard9811
 
 # Screen shot
 
@@ -53,4 +53,4 @@ Then the default data will load.
 
 # Liccense
 
-* MIT {https://github.com/Dard9811/Looking_Datos_gov/blob/master/LICENSE}
+* MIT - https://github.com/Dard9811/Looking_Datos_gov/blob/master/LICENSE
