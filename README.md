@@ -47,4 +47,10 @@ Then the default data will load.
 
 * Daniel Augusto Ramirez Dueñas {https://github.com/Dard9811}
 
+# Screen shot
+
 ![Screen Shot](https://dard9811.github.io/Homepage-Daniel-Ramirez/images/ScreenShotLD.PNG)
+
+# Liccense
+
+* MIT {}
