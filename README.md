@@ -53,4 +53,4 @@ Then the default data will load.
 
 # Liccense
 
-* MIT {}
+* MIT {https://github.com/Dard9811/Looking_Datos_gov/blob/master/LICENSE}
