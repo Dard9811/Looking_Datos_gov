@@ -39,8 +39,7 @@ class App extends React.Component{
             }
             console.log(datosFull)
             this.setState({
-              datos: datosFull,
-              displayNavio: true
+              datos: datosFull
             })
             i = this.state.tamanio;
 /*             console.log(this.state.datos) */
@@ -53,9 +52,6 @@ class App extends React.Component{
 
    componentDidMount(){
      this.addData()
-     this.setState({
-       displayNavio: false
-     })
    }
 
   onChange(event){
@@ -74,25 +70,21 @@ class App extends React.Component{
     this.setState({
       displayNavio: true
     })
-/*     fetch(this.state.url)
-    .then(res => res.json())
-    .then((data) => {this.setState({
-      datos: data
-    }) */
-
-/*     this.setState({
-      displayNavio: false
-    })
-  }) */
+    this.addData()
+    setTimeout(() => {
+      this.setState({
+        displayNavio: false
+      })
+    }, 50)
   }
 
   render(){
     return(
         <div className="container">
-          <h1>Welcom to looking datos.gov.co</h1>
+          <h1>Welcome to looking datos.gov.co</h1>
           <form>
             <div className="form-group">
-              <p>This is our first visualice of the </p>
+              <p>You are visualizing an example data, please insert your url below and be sure to know the exact size of your data.</p>
               <label htmlFor="myIn"> Insert your link of the json from <a href="https://www.datos.gov.co/browse?sortBy=newest" target="_blank">datos.gov.co</a></label>
               <input
               id="myIn"
